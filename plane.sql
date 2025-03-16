@@ -211,7 +211,8 @@ AS
 BEGIN
     SELECT * FROM PhiCong;
 END;
---
+--EXEC sp_GetAllPhiCong;
+
 
 -- Stored Procedure không tham số: Lấy tất cả phi công
 CREATE PROCEDURE sp_GetAllPhiCong
@@ -219,7 +220,7 @@ AS
 BEGIN
     SELECT * FROM PhiCong;
 END;
-
+-- EXEC sp_GetPhiCongByMaSo '101';
 -- Stored Procedure có tham số: Lấy phi công theo MaSo
 CREATE PROCEDURE sp_GetPhiCongByMaSo
     @MaSo INT
@@ -241,6 +242,13 @@ BEGIN
 
     SELECT @NewLuong = Luong FROM PhiCong WHERE MaSo = @MaSo;
 END;
+-- DECLARE @MucLuongCapNhat DECIMAL(10,2);
+--EXEC sp_UpdateLuongPhiCong 
+    --@MaSo = 105, 
+   -- @Luong = 20000.00, 
+   -- @NewLuong = @MucLuongCapNhat OUTPUT;
+
+SELECT @MucLuongCapNhat AS LuongSauKhiCapNhat;
 
 -- Stored Procedure không tham số: Lấy thông tin tất cả máy bay
 CREATE PROCEDURE sp_GetAllMayBay
@@ -256,7 +264,7 @@ AS
 BEGIN
     DELETE FROM PhiCong WHERE MaSo = @MaSo;
 END;
-
+-- 
 -- Stored Procedure không tham số: Lấy tất cả kiểm tra máy bay
 CREATE PROCEDURE sp_GetAllKiemTraMayBay
 AS
@@ -276,6 +284,7 @@ BEGIN
     INSERT INTO KiemTraMayBay (MaDot, LoaiKiemTra, NgayKiemTra, MaSoKTV, MaMayBay) 
     VALUES (@MaDot, @LoaiKiemTra, @NgayKiemTra, @MaSoKTV, @MaMayBay);
 END;
+-- EXEC sp_AddKiemTraMayBay @MaDot = 1, @LoaiKiemTra = N'Kiểm tra động cơ',  @NgayKiemTra = '2025-03-20',  @MaSoKTV = 101, @MaMayBay = 202;
 
 -- Stored Procedure có OUTPUT: Tính tổng số phi công có thể lái máy bay theo loại
 CREATE PROCEDURE sp_CountPhiCongByLoaiMayBay
@@ -297,7 +306,7 @@ AS
 BEGIN
     RETURN @HeSo * 3000;
 END;
-
+-- SELECT dbo.fn_TinhLuong(30) AS LuongTinhToan;
 
 -- Function tính tổng lương của phi công
 CREATE FUNCTION fn_TongLuongPhiCong()
