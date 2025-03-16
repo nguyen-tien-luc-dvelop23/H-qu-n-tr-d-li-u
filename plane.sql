@@ -92,6 +92,13 @@ VALUES
 (101, 1), 
 (102, 2);
 
+DELETE FROM PhiCong WHERE MaSo = 105;
+DELETE FROM PhiCong;
+
+UPDATE PhiCong 
+SET Luong = 4500 
+WHERE MaSo = 103;
+
 -- Truy vấn cơ bản
 SELECT * FROM MayBay;
 SELECT * FROM PhiCong WHERE Luong > 2000;
