@@ -1,2 +1,2 @@
-C:\Windows\SysWOW64\SQLServerManager1#.msc
+C:\Windows\SysWOW64\SQLServerManager1#
 compmgmt.msc
