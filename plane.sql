@@ -134,6 +134,15 @@ JOIN PhiCong_MayBay PM ON M.MaMayBay = PM.MaMayBay
 JOIN PhiCong P ON PM.MaSo = P.MaSo
 GROUP BY LM.TenLoai;
 
+SELECT LMB.TenLoai, COUNT(DISTINCT P.MaSo) AS SoLuongPhiCong
+FROM LoaiMayBay LMB
+INNER JOIN MayBay MB ON LMB.LoaiID = MB.LoaiID
+INNER JOIN PhiCong_MayBay PM ON MB.MaMayBay = PM.MaMayBay
+INNER JOIN PhiCong P ON PM.MaSo = P.MaSo
+GROUP BY LMB.TenLoai
+HAVING COUNT(DISTINCT P.MaSo) >= 2;
+
+
 -- VIEW tổng hợp: Danh sách phi công cùng thông tin máy bay và kỹ thuật viên kiểm tra
 CREATE VIEW v_PhiCong_MayBay_KTV AS 
 SELECT P.HoTen AS PhiCong, M.HangSanXuat AS MayBay, K.LoaiKiemTra AS KiemTra, K.NgayKiemTra
