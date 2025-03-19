@@ -92,13 +92,6 @@ VALUES
 (101, 1), 
 (102, 2);
 
-DELETE FROM PhiCong WHERE MaSo = 105;
-DELETE FROM PhiCong;
-
-UPDATE PhiCong 
-SET Luong = 4500 
-WHERE MaSo = 103;
-
 -- Truy vấn cơ bản
 SELECT * FROM MayBay;
 SELECT * FROM PhiCong WHERE Luong > 2000;
@@ -120,6 +113,7 @@ SELECT P.HoTen, M.HangSanXuat
 FROM PhiCong P 
 JOIN PhiCong_MayBay PM ON P.MaSo = PM.MaSo
 JOIN MayBay M ON PM.MaMayBay = M.MaMayBay;
+
 -- VIEW lọc: Lấy danh sách kỹ thuật viên có lương trên 2500
 CREATE VIEW v_KyThuatVien_LuongCao AS 
 SELECT HoTen, Luong FROM KyThuatVien WHERE Luong > 2500;
@@ -140,15 +134,7 @@ JOIN MayBay M ON LM.LoaiID = M.LoaiID
 JOIN PhiCong_MayBay PM ON M.MaMayBay = PM.MaMayBay
 JOIN PhiCong P ON PM.MaSo = P.MaSo
 GROUP BY LM.TenLoai;
-
--- SELECT LMB.TenLoai, COUNT(DISTINCT P.MaSo) AS SoLuongPhiCong
---FROM LoaiMayBay LMB
---INNER JOIN MayBay MB ON LMB.LoaiID = MB.LoaiID
---INNER JOIN PhiCong_MayBay PM ON MB.MaMayBay = PM.MaMayBay
---INNER JOIN PhiCong P ON PM.MaSo = P.MaSo
---GROUP BY LMB.TenLoai
---HAVING COUNT(DISTINCT P.MaSo) >= 2;
-
+having by 
 
 -- VIEW tổng hợp: Danh sách phi công cùng thông tin máy bay và kỹ thuật viên kiểm tra
 CREATE VIEW v_PhiCong_MayBay_KTV AS 
@@ -165,7 +151,7 @@ FROM PhiCong P
 JOIN PhiCong_MayBay PM ON P.MaSo = PM.MaSo
 JOIN MayBay M ON PM.MaMayBay = M.MaMayBay
 JOIN KiemTraMayBay K ON M.MaMayBay = K.MaMayBay
-WHERE MONTH(K.NgayKiemTra) = 2;
+WHERE MONTH(K.NgayKiemTra) = 3;
 
 --
 CREATE VIEW v_PhiCong AS 
@@ -211,8 +197,7 @@ AS
 BEGIN
     SELECT * FROM PhiCong;
 END;
---EXEC sp_GetAllPhiCong;
-
+--
 
 -- Stored Procedure không tham số: Lấy tất cả phi công
 CREATE PROCEDURE sp_GetAllPhiCong
@@ -220,7 +205,7 @@ AS
 BEGIN
     SELECT * FROM PhiCong;
 END;
--- EXEC sp_GetPhiCongByMaSo '101';
+
 -- Stored Procedure có tham số: Lấy phi công theo MaSo
 CREATE PROCEDURE sp_GetPhiCongByMaSo
     @MaSo INT
@@ -242,13 +227,6 @@ BEGIN
 
     SELECT @NewLuong = Luong FROM PhiCong WHERE MaSo = @MaSo;
 END;
--- DECLARE @MucLuongCapNhat DECIMAL(10,2);
---EXEC sp_UpdateLuongPhiCong 
-    --@MaSo = 105, 
-   -- @Luong = 20000.00, 
-   -- @NewLuong = @MucLuongCapNhat OUTPUT;
-
-SELECT @MucLuongCapNhat AS LuongSauKhiCapNhat;
 
 -- Stored Procedure không tham số: Lấy thông tin tất cả máy bay
 CREATE PROCEDURE sp_GetAllMayBay
@@ -264,7 +242,7 @@ AS
 BEGIN
     DELETE FROM PhiCong WHERE MaSo = @MaSo;
 END;
--- 
+
 -- Stored Procedure không tham số: Lấy tất cả kiểm tra máy bay
 CREATE PROCEDURE sp_GetAllKiemTraMayBay
 AS
@@ -284,7 +262,6 @@ BEGIN
     INSERT INTO KiemTraMayBay (MaDot, LoaiKiemTra, NgayKiemTra, MaSoKTV, MaMayBay) 
     VALUES (@MaDot, @LoaiKiemTra, @NgayKiemTra, @MaSoKTV, @MaMayBay);
 END;
--- EXEC sp_AddKiemTraMayBay @MaDot = 1, @LoaiKiemTra = N'Kiểm tra động cơ',  @NgayKiemTra = '2025-03-20',  @MaSoKTV = 101, @MaMayBay = 202;
 
 -- Stored Procedure có OUTPUT: Tính tổng số phi công có thể lái máy bay theo loại
 CREATE PROCEDURE sp_CountPhiCongByLoaiMayBay
@@ -306,7 +283,7 @@ AS
 BEGIN
     RETURN @HeSo * 3000;
 END;
--- SELECT dbo.fn_TinhLuong(30) AS LuongTinhToan;
+
 
 -- Function tính tổng lương của phi công
 CREATE FUNCTION fn_TongLuongPhiCong()

@@ -1,0 +1,4 @@
+https://github.com/nguyen-tien-luc-dvelop23/H-qu-n-tr-d-li-u
+dữ liệu  :
+60 dữ liệu
+select * from + tên bảng để xem
